@@ -24,15 +24,12 @@ class OfferRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:100',
-             'price' => 'required|numeric',
-             'details' => 'required',
-
-            // 'name_ar' => 'required|max:100',
-            // 'name_en' => 'required|max:100',
-            // 'price' => 'required|numeric',
-            // 'details_ar' => 'required',
-            // 'details_en' => 'required',
+            'name_ar' => 'required|max:100',
+            'name_en' => 'required|max:100',
+            'price' => 'required|numeric',
+            'details_ar' => 'required',
+            'details_en' => 'required',
+            
             // 'photo' => 'required|mimes:png,jpg,jpeg',
 
         ];
@@ -42,20 +39,15 @@ class OfferRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => __('messages.offer name required'),
-            'name.unique' => __('offer name must be unique'),
+            'name_ar.required' => __('messages.offer name required'),
+            'name_en.required' => __('messages.offer name required'),
+            'name_ar.unique' => 'اسم العرض موجود ',
+            'name_en.unique' => 'Offer name  is exists ',
             'price.numeric' => 'سعر العرض يجب ان يكون ارقام',
             'price.required' => 'السعر مطلوب',
-            'details.required' => 'ألتفاصيل مطلوبة ',
+            'details_ar.required' => 'ألتفاصيل مطلوبة ',
+            'details_en.required' => 'ألتفاصيل مطلوبة ',
 
-            // 'name_ar.required' => __('messages.offer name required'),
-            // 'name_en.required' => __('messages.offer name required'),
-            // 'name_ar.unique' => 'اسم العرض موجود ',
-            // 'name_en.unique' => 'Offer name  is exists ',
-            // 'price.numeric' => 'سعر العرض يجب ان يكون ارقام',
-            // 'price.required' => 'السعر مطلوب',
-            // 'details_ar.required' => 'ألتفاصيل مطلوبة ',
-            // 'details_en.required' => 'ألتفاصيل مطلوبة ',
             // 'photo.required' =>  'صوره العرض مطلوب',
             // 'photo.mimes' =>  'صوره غير صالحة',
         ];
