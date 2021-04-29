@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OfferRequest;
 use App\models\Offer;
+use App\Traits\OfferTrait;
 use Illuminate\Http\Request;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class OfferController extends Controller
 {
+    use OfferTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -48,7 +51,7 @@ class OfferController extends Controller
     {
         return view('offers.create');
     }
-
+        
     /**
      * Store a newly created resource in storage.
      *
@@ -57,11 +60,21 @@ class OfferController extends Controller
      */
     public function store(OfferRequest $request)
     {
-        $data = $request->only(['name_ar', 'name_en', 'price', 'details_ar', 'details_en', ]);
+        $path = 'images/offers';  // Chemin des img
 
+        if(request()->has('photo')){
+            $file_name = $this->saveImage($request->photo, $path);
+            $data = $request->only(['name_ar', 'name_en', 'price', 'details_ar', 'details_en', 'photo' ]);
+            //$data['photo'] = $file_name;
+            $data['photo'] = $path.'/'.$file_name;
+        }
+        else
+        {
+            $data = $request->only(['name_ar', 'name_en', 'price', 'details_ar', 'details_en' ]);
+        }
         $offer = Offer::create($data);
         $request->session()->flash('status', 'Création validé !!');
-        return redirect()->route('offers.all');
+        return redirect()->route('offers.create');
     }
 
     /**
@@ -81,9 +94,9 @@ class OfferController extends Controller
      * @param  \App\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Offer $offer)
+    public function editOffer(Offer $offer)
     {
-        //
+        return view('offers.edit', ['offer' => $offer ]);
     }
 
     /**
@@ -93,9 +106,21 @@ class OfferController extends Controller
      * @param  \App\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Offer $offer)
+    public function updateOffer(OfferRequest $request, $id)
     {
-        //
+        $offer = Offer::findOrFail($id);
+        $offer->update($request->all());
+
+        // $data = $request->only(['name_ar', 'name_en', 'price', 'details_ar', 'details_en', ]);
+        // $offer->name_ar = $data['name_ar'];
+        // $offer->name_en = $data['name_en'];
+        // $offer->price = $data['price'];
+        // $offer->details_ar = $data['details_ar'];
+        // $offer->details_en = $data['details_en'];
+        // $offer->save();
+
+        $request->session()->flash('status', 'Mise à jour validé !!');
+        return view('offers.edit', ['offer' => $offer ]);
     }
 
     /**

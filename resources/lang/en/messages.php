@@ -26,7 +26,7 @@ return [
     "Save Offer" => 'Save',
     "Offer Name" => "Offer name",
     "Offer details" => "Offer details",
-    "operation" => "operation",
+    "operation" => "Operation",
     "update" => "Update",
     "Update your offer" => "Update your offer  ",
     "delete" => "delete",

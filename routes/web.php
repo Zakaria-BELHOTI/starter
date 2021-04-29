@@ -21,12 +21,12 @@ Route::get('/callback/{service}', 'SocialController@callback');
 
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function () {
     Route::group(['prefix' => 'offers'], function () {
-        Route::get('create', 'OfferController@create');
+        Route::get('create', 'OfferController@create')->name('offers.create');
         Route::get('all', 'OfferController@getAllOffers')->name('offers.all');
         Route::post('store', 'OfferController@store')->name('offers.store');
+        Route::get('edit/{offer}', 'OfferController@editOffer');
+        Route::post('update/{offer}', 'OfferController@UpdateOffer')->name('offers.update');
 
-        // Route::get('edit/{offer_id}', 'OfferController@editOffer');
-        // Route::post('update/{offer_id}', 'OfferController@UpdateOffer')->name('offers.update');
         // Route::get('delete/{offer_id}', 'OfferController@delete')->name('offers.delete');
         // Route::get('get-all-inactive-offer', 'OfferController@getAllInactiveOffers');
     });
