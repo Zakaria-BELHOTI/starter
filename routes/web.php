@@ -26,9 +26,19 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
         Route::post('store', 'OfferController@store')->name('offers.store');
         Route::get('edit/{offer}', 'OfferController@editOffer');
         Route::post('update/{offer}', 'OfferController@UpdateOffer')->name('offers.update');
-
-        // Route::get('delete/{offer_id}', 'OfferController@delete')->name('offers.delete');
-        // Route::get('get-all-inactive-offer', 'OfferController@getAllInactiveOffers');
+        Route::get('delete/{offer_id}', 'OfferController@delete')->name('offers.delete');
+        Route::get('get-all-inactive-offer', 'OfferController@getAllInactiveOffers');
     });
 
+    Route::get('youtube', 'OfferController@getVideo')->middleware('auth');
+
+});
+
+################### Ajax
+
+Route::group(['prefix' => 'ajax-offers'], function () {
+    Route::get('create', 'OfferAjaxController@create');
+    Route::post('store', 'OfferAjaxController@store')->name('ajax.offers.store');
+    Route::get('all', 'OfferAjaxController@all')->name('ajax.offers.all');
+    Route::post('delete', 'OfferAjaxController@delete')->name('ajax.offers.delete');
 });

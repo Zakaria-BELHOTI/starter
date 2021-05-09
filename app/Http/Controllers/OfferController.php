@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\VideoViewer;
 use App\Http\Requests\OfferRequest;
 use App\models\Offer;
+use App\models\Video;
 use App\Traits\OfferTrait;
 use Illuminate\Http\Request;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -24,7 +26,7 @@ class OfferController extends Controller
         $offers = Offer::select(
             'id',
             'price',
-        //    'photo',
+            'photo',
             'name_' . LaravelLocalization::getCurrentLocale() . ' as name',
             'details_' . LaravelLocalization::getCurrentLocale() . ' as details'
         )->get(); // return collection of all result
@@ -132,5 +134,31 @@ class OfferController extends Controller
     public function destroy(Offer $offer)
     {
         //
+    }
+
+    public function delete($offer)
+    {
+        // $eleve->delete();
+        // Eleve::destroy($id);
+        // $eleve = Eleve::findOrFail($id);
+        // $eleve->eleve_supprime = 1;
+        // $eleve->save();
+        //$request->session()->flash('status', 'Suppression validé !!');
+
+        $offer = Offer::find($offer);   // Offer::where('id','$offer_id') -> first();
+        if (!$offer)
+            return redirect()->back()->with(['error' => __('messages.offer not exist')]);
+
+        $offer->delete();
+
+        return redirect()
+        ->route('offers.all')
+        ->with(['status' => __('messages.offer deleted successfully')]);
+    }
+
+    public function getVideo(){
+        $video = Video::first();
+        event(new VideoViewer($video));   // fire event
+        return view('video', ['video' => $video]);
     }
 }

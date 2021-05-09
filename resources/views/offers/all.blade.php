@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,11 +9,13 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- Styles -->
     <style>
-        html, body {
+        html,
+        body {
             background-color: #fff;
             color: #636b6f;
             font-family: 'Nunito', sans-serif;
@@ -49,7 +52,7 @@
             font-size: 84px;
         }
 
-        .links > a {
+        .links>a {
             color: #636b6f;
             padding: 0 25px;
             font-size: 13px;
@@ -62,27 +65,30 @@
         .m-b-md {
             margin-bottom: 30px;
         }
+
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-    
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                     <li class="nav-item active">
                         <a class="nav-link"
-                           href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"> {{ $properties['native'] }}
+                            href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                            {{ $properties['native'] }}
                             <span class="sr-only">(current)</span></a>
                     </li>
                 @endforeach
-    
-    
+
+
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -90,30 +96,48 @@
             </form>
         </div>
     </nav>
+    @if (session()->has('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session()->get('status') }}
+        </div>
+    @endif
+    @if (session()->has('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session()->get('error') }}
+        </div>
+    @endif
     <table class="table table-striped">
         <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">{{__('messages.Offer Name')}}</th>
-            <th scope="col">{{__('messages.Offer Price')}}</th>
-            <th scope="col">{{__('messages.Offer details')}}</th>
-            <th scope="col">{{__('messages.operation')}}</th>
-          </tr>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{{ __('messages.Offer Name') }}</th>
+                <th scope="col">{{ __('messages.Offer Price') }}</th>
+                <th scope="col">{{ __('messages.Offer details') }}</th>
+                <th scope="col">Images</th>
+                <th scope="col">{{ __('messages.operation') }}</th>
+            </tr>
         </thead>
         <tbody>
-        @forelse ($offers as $offer)
-          <tr>
-            <th scope="row">{{ $offer['id'] }}</th>
-            <td>{{ $offer['name'] }}</td>
-            <td>{{ $offer['price'] }}</td>
-            <td>{{ $offer['details'] }}</td>
-            <td> <a href="{{url('offers/edit/'.$offer->id)}}" class="btn btn-success">{{__('messages.update')}}</a></td>
-          </tr>
-        @empty
-            Vide
-        @endforelse
+            @forelse ($offers as $offer)
+                <tr>
+                    <th scope="row">{{ $offer['id'] }}</th>
+                    <td>{{ $offer['name'] }}</td>
+                    <td>{{ $offer['price'] }}</td>
+                    <td>{{ $offer['details'] }}</td>
+                    <td><img style="width: 90px; height: 90px;" src="/{{ $offer->photo }}"></td>
+                    <td>
+                        <a href="{{ url('offers/edit/' . $offer->id) }}"
+                            class="btn btn-success">{{ __('messages.update') }}</a>
+                        <a href="{{ route('offers.delete', $offer->id) }}"
+                            class="btn btn-danger">{{ __('messages.delete') }}</a>
+                    </td>
+                </tr>
+            @empty
+                Vide
+            @endforelse
         </tbody>
-      </table>
-</div>
+    </table>
+    </div>
 </body>
+
 </html>
