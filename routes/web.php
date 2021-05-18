@@ -10,8 +10,8 @@ Route::get('/home',function(){
 });
 
 Route::get('/dashboard',function(){
-    return 'dashboard';
-});
+    return 'Not Adult';
+})->name('not.adult');
 
 Route::get('/redirect/{service}', 'SocialController@redirect');
 
@@ -34,11 +34,22 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
 });
 
-################### Ajax
-
+################### Ajax ###########################
 Route::group(['prefix' => 'ajax-offers'], function () {
     Route::get('create', 'OfferAjaxController@create');
     Route::post('store', 'OfferAjaxController@store')->name('ajax.offers.store');
     Route::get('all', 'OfferAjaxController@all')->name('ajax.offers.all');
     Route::post('delete', 'OfferAjaxController@delete')->name('ajax.offers.delete');
+    Route::get('edit/{id}', 'OfferAjaxController@edit')->name('ajax.offers.edit');
+    Route::post('update', 'OfferAjaxController@Update')->name('ajax.offers.update');
+
 });
+
+################### Authentification && Guards ###########################
+Route::group(['middleware' => 'CheckAge', 'namespace' => 'Auth'], function () {
+    Route::get('adults', 'CustomAuthController@adult')->name('adult');
+
+});
+
+Route::get('site', 'Auth\CustomAuthController@site')->name('site');
+Route::get('adminn', 'Auth\CustomAuthController@admin')->name('admin');

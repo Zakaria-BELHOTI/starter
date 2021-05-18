@@ -86,9 +86,16 @@ class OfferAjaxController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $offer = Offer::find($request->id);
+        if (!$offer)
+        return response()->json([
+            'status' => false,
+            'msg' => "Not found"
+        ]);
+        $offer = Offer::select('id', 'name_ar', 'name_en', 'price', 'details_ar', 'details_en')->find($request->id);
+        return view('ajaxoffers.edit', ['offer' => $offer ]);
     }
 
     /**
@@ -98,9 +105,15 @@ class OfferAjaxController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $offer = Offer::findOrFail($request->offer_id);
+        $offer->update($request->all());
+
+        return response()->json([
+            'status' => true,
+            'msg' => "UPDATED",
+        ]);
     }
 
     /**

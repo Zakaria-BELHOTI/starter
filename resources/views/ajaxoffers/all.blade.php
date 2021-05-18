@@ -41,6 +41,7 @@
                         <a href="{{ route('offers.delete', $offer->id) }}"
                             class="btn btn-danger">{{ __('messages.delete') }}</a>
                         <a href="" offer_id={{ $offer->id }} class="delete_btn btn btn-dark">Ajax-Delete</a>
+                        <a href="{{ route('ajax.offers.edit', $offer->id) }}" class="btn btn-info">Ajax-Edit</a>
                     </td>
                 </tr>
             @empty
@@ -55,7 +56,6 @@
                 var offer_id = $(this).attr('offer_id');
                 $.ajax({
                     type: 'post',
-                    enctype: 'multipart/form-data',
                     url: "{{ route('ajax.offers.delete') }}",
                     data: {
                         "_token": "{{ csrf_token() }}",
