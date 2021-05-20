@@ -5,7 +5,6 @@ Auth::routes(['verify'=>true]);
 Route::get('/', 'HomeController@index')->name('home') ->middleware('verified');
 
 Route::get('/home',function(){
-
     return 'Home';
 });
 
@@ -51,5 +50,8 @@ Route::group(['middleware' => 'CheckAge', 'namespace' => 'Auth'], function () {
 
 });
 
-Route::get('site', 'Auth\CustomAuthController@site')->name('site');
-Route::get('adminn', 'Auth\CustomAuthController@admin')->name('admin');
+Route::get('site', 'Auth\CustomAuthController@site')->middleware('auth:web')->name('site');
+Route::get('admin', 'Auth\CustomAuthController@admin')->middleware('auth:admin')->name('admin');
+
+Route::get('admin/login', 'Auth\CustomAuthController@adminLogin')->name('admin.login');
+Route::post('admin/login', 'Auth\CustomAuthController@checkAdminLogin')->name('save.admin.login');
