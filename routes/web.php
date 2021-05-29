@@ -55,3 +55,9 @@ Route::get('admin', 'Auth\CustomAuthController@admin')->middleware('auth:admin')
 
 Route::get('admin/login', 'Auth\CustomAuthController@adminLogin')->name('admin.login');
 Route::post('admin/login', 'Auth\CustomAuthController@checkAdminLogin')->name('save.admin.login');
+
+    ############## Begin Relations Routes ###############
+    Route::get('has-one', 'Relation\RelationsController@hasOneRelation');
+    Route::get('has-one-reverse', 'Relation\RelationsController@hasOneRelationReverse');
+    Route::get('has-phone', 'Relation\RelationsController@hasPhone');
+    Route::get('has-not-phone', 'Relation\RelationsController@hasNotPhone');
